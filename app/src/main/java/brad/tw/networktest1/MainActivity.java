@@ -20,6 +20,7 @@ import java.util.Enumeration;
 
 public class MainActivity extends AppCompatActivity {
     private ConnectivityManager mgr;
+    private String data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,12 +84,18 @@ public class MainActivity extends AppCompatActivity {
                 conn.connect();
                 BufferedReader reader =
                         new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
+                data = reader.readLine();
                 reader.close();
+                Log.d("brad", data);
             }catch(Exception ee){
                 Log.d("brad", ee.toString());
             }
         }
     }
+
+    private void parseJSON(){
+        
+    }
+
 
 }
