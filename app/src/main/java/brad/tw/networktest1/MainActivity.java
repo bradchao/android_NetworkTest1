@@ -7,7 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
@@ -76,16 +78,13 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                URL url = new URL("http://www.google.com");
+                URL url = new URL("http://data.coa.gov.tw/Service/OpenData/EzgoTravelFoodStay.aspx");
                 HttpURLConnection conn =  (HttpURLConnection) url.openConnection();
                 conn.connect();
-                InputStream in = conn.getInputStream();
-                int c; StringBuffer sb = new StringBuffer();
-                while ( (c = in.read()) != -1){
-                    sb.append((char)c);
-                }
-                in.close();
-                Log.d("brad", sb.toString());
+                BufferedReader reader =
+                        new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+                reader.close();
             }catch(Exception ee){
                 Log.d("brad", ee.toString());
             }
