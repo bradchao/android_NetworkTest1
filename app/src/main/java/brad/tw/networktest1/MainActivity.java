@@ -2,10 +2,12 @@ package brad.tw.networktest1;
 
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,10 +26,18 @@ import java.util.Enumeration;
 public class MainActivity extends AppCompatActivity {
     private ConnectivityManager mgr;
     private String data;
+    private TextView mesg;
+    private StringBuffer sb;
+    private UIHandler handler;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        handler = new UIHandler();
+        mesg = (TextView)findViewById(R.id.mesg);
 
         mgr = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo info = mgr.getActiveNetworkInfo();
@@ -74,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
 //                }
 //            }
 //        }.start();
+
+        mesg.setText("");
+
         MyTread mt1 = new MyTread();
         mt1.start();
     }
@@ -97,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void parseJSON(){
+        sb = new StringBuffer();
         try {
             JSONArray root = new JSONArray(data);
             for (int i=0; i<root.length(); i++){
@@ -104,11 +118,22 @@ public class MainActivity extends AppCompatActivity {
                 String name = row.getString("Name");
                 String addr = row.getString("Address");
                 Log.d("brad", name + " -> " + addr);
+                sb.append(name + " -> " + addr + "\n");
             }
+            handler.sendEmptyMessage(0);
         }catch(Exception ee){
             Log.d("brad", ee.toString());
         }
     }
 
+    private class UIHandler extends android.os.Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            mesg.setText(sb);
+
+
+        }
+    }
 
 }
