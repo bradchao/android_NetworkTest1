@@ -5,11 +5,15 @@ import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.URL;
 import java.util.Enumeration;
 
 public class MainActivity extends AppCompatActivity {
@@ -21,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         mgr = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
         NetworkInfo info = mgr.getActiveNetworkInfo();
-        if (info.isConnected()){
+        if (info != null && info.isConnected()){
             try {
                 Enumeration<NetworkInterface> ifs = NetworkInterface.getNetworkInterfaces();
                 while (ifs.hasMoreElements()){
@@ -43,4 +47,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    public void test1(View v){
+        try {
+            URL url = new URL("http://www.google.com");
+            HttpURLConnection conn =  (HttpURLConnection) url.openConnection();
+            conn.connect();
+            InputStream in = conn.getInputStream();
+            int c; StringBuffer sb = new StringBuffer();
+            while ( (c = in.read()) != -1){
+                sb.append((char)c);
+            }
+            in.close();
+            Log.d("brad", sb.toString());
+        }catch(Exception ee){
+            Log.d("brad", ee.toString());
+        }
+    }
+
 }
