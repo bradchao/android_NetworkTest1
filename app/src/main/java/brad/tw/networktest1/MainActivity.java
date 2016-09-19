@@ -49,19 +49,46 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void test1(View v){
-        try {
-            URL url = new URL("http://www.google.com");
-            HttpURLConnection conn =  (HttpURLConnection) url.openConnection();
-            conn.connect();
-            InputStream in = conn.getInputStream();
-            int c; StringBuffer sb = new StringBuffer();
-            while ( (c = in.read()) != -1){
-                sb.append((char)c);
+//        new Thread(){
+//            @Override
+//            public void run() {
+//                try {
+//                    URL url = new URL("http://www.google.com");
+//                    HttpURLConnection conn =  (HttpURLConnection) url.openConnection();
+//                    conn.connect();
+//                    InputStream in = conn.getInputStream();
+//                    int c; StringBuffer sb = new StringBuffer();
+//                    while ( (c = in.read()) != -1){
+//                        sb.append((char)c);
+//                    }
+//                    in.close();
+//                    Log.d("brad", sb.toString());
+//                }catch(Exception ee){
+//                    Log.d("brad", ee.toString());
+//                }
+//            }
+//        }.start();
+        MyTread mt1 = new MyTread();
+        mt1.start();
+    }
+
+    private class MyTread extends Thread {
+        @Override
+        public void run() {
+            try {
+                URL url = new URL("http://www.google.com");
+                HttpURLConnection conn =  (HttpURLConnection) url.openConnection();
+                conn.connect();
+                InputStream in = conn.getInputStream();
+                int c; StringBuffer sb = new StringBuffer();
+                while ( (c = in.read()) != -1){
+                    sb.append((char)c);
+                }
+                in.close();
+                Log.d("brad", sb.toString());
+            }catch(Exception ee){
+                Log.d("brad", ee.toString());
             }
-            in.close();
-            Log.d("brad", sb.toString());
-        }catch(Exception ee){
-            Log.d("brad", ee.toString());
         }
     }
 
