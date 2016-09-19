@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
             try {
-                URL url = new URL("http://data.coa.gov.tw/Service/OpenData/EzgoTravelFoodStay.aspx");
+                URL url = new URL("http://m.coa.gov.tw/OpenData/FarmTransData.aspx");
                 HttpURLConnection conn =  (HttpURLConnection) url.openConnection();
                 conn.connect();
                 BufferedReader reader =
@@ -115,8 +115,8 @@ public class MainActivity extends AppCompatActivity {
             JSONArray root = new JSONArray(data);
             for (int i=0; i<root.length(); i++){
                 JSONObject row = root.getJSONObject(i);
-                String name = row.getString("Name");
-                String addr = row.getString("Address");
+                String name = row.getString("交易日期");
+                String addr = row.getString("作物名稱");
                 Log.d("brad", name + " -> " + addr);
                 sb.append(name + " -> " + addr + "\n");
             }
@@ -124,6 +124,10 @@ public class MainActivity extends AppCompatActivity {
         }catch(Exception ee){
             Log.d("brad", ee.toString());
         }
+    }
+
+    public void test2(View v){
+        
     }
 
     private class UIHandler extends android.os.Handler {
