@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -86,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
                         new BufferedReader(new InputStreamReader(conn.getInputStream()));
                 data = reader.readLine();
                 reader.close();
-                Log.d("brad", data);
+                parseJSON();
             }catch(Exception ee){
                 Log.d("brad", ee.toString());
             }
@@ -94,7 +97,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void parseJSON(){
-        
+        try {
+            JSONArray root = new JSONArray(data);
+            for (int i=0; i<root.length(); i++){
+                JSONObject row = root.getJSONObject(i);
+                String name = row.getString("Name");
+                String addr = row.getString("Address");
+                Log.d("brad", name + " -> " + addr);
+            }
+        }catch(Exception ee){
+            Log.d("brad", ee.toString());
+        }
     }
 
 
